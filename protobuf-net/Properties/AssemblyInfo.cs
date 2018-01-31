@@ -48,4 +48,6 @@ using System.Runtime.CompilerServices;
     + "ec5ff6bc")]
 #endif
 
+[assembly: InternalsVisibleTo("ProtoContract")]
+
 [assembly: CLSCompliant(false)]

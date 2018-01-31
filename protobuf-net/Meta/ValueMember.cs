@@ -1,5 +1,6 @@
 ﻿#if !NO_RUNTIME
 using System;
+using System.Collections;
 
 using ProtoBuf.Serializers;
 using System.Globalization;
@@ -603,14 +604,38 @@ namespace ProtoBuf.Meta
             set { SetFlag(OPTIONS_SupportNull, value, true);}
         }
 
+        public bool IsDictionary
+        {
+            get { return Helpers.IsDictionary(MemberType); }
+        }
+
         internal string GetSchemaTypeName(bool applyNetObjectProxy, ref bool requiresBclImport)
         {
             Type effectiveType = ItemType;
             if (effectiveType == null) effectiveType = MemberType;
+
+            if (IsDictionary)
+            {
+                return ToProtoMapName(MemberType, ref requiresBclImport);
+            }
+
             return model.GetSchemaTypeName(effectiveType, DataFormat, applyNetObjectProxy && asReference, applyNetObjectProxy && dynamicType, ref requiresBclImport);
         }
 
-        
+        String ToProtoMapName(Type dictionaryType, ref bool requireBclImport)
+        {
+            Type[] argumentTypes = dictionaryType.GetGenericArguments();
+            return string.Format("Map<{0}, {1}>", ToProtoName(argumentTypes[0], ref requireBclImport), ToProtoName(argumentTypes[1], ref requireBclImport));
+        }
+
+        String ToProtoName(Type type, ref bool requireBclImport)
+        {
+            if (Helpers.IsDictionary(type))
+                return ToProtoMapName(type, ref requireBclImport);
+
+            return model.GetSchemaTypeName(type, DataFormat.Default, false, false, ref requireBclImport);
+        }
+
         internal sealed class Comparer : System.Collections.IComparer
 #if !NO_GENERICS
 , System.Collections.Generic.IComparer<ValueMember>

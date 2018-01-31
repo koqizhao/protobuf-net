@@ -383,6 +383,17 @@ namespace ProtoBuf
 #endif
         }
 
+        internal static bool IsDictionary(Type type)
+        {
+            foreach (Type item in type.GetInterfaces())
+            {
+                if (item == typeof(IDictionary))
+                    return true;
+            }
+
+            return false;
+        }
+
         internal static MethodInfo GetGetMethod(PropertyInfo property, bool nonPublic, bool allowInternal)
         {
             if (property == null) return null;

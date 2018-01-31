@@ -1806,8 +1806,10 @@ namespace ProtoBuf.Meta
                 NewLine(builder, indent).Append("message ").Append(GetSchemaTypeName()).Append(" {");
                 foreach (ValueMember member in fieldsArr)
                 {
-                    string ordinality = member.ItemType != null ? "repeated" : member.IsRequired ? "required" : "optional";
-                    NewLine(builder, indent + 1).Append(ordinality).Append(' ');
+                    string ordinality = member.IsDictionary ? String.Empty : member.ItemType != null ? "repeated" : member.IsRequired ? "required" : "optional";
+                    NewLine(builder, indent + 1).Append(ordinality);
+                    if (!String.IsNullOrEmpty(ordinality))
+                        builder.Append(' ');
                     if (member.DataFormat == DataFormat.Group) builder.Append("group ");
                     string schemaTypeName = member.GetSchemaTypeName(true, ref requiresBclImport);
                     builder.Append(schemaTypeName).Append(" ")

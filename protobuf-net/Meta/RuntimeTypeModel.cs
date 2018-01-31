@@ -1948,10 +1948,10 @@ namespace ProtoBuf.Meta
                             case DataFormat.FixedSize: return "sfixed64";
                             default: return "int64";
                         }
-                    case ProtoTypeCode.DateTime: requiresBclImport = true; return "bcl.DateTime";
-                    case ProtoTypeCode.TimeSpan: requiresBclImport = true; return "bcl.TimeSpan";
-                    case ProtoTypeCode.Decimal: requiresBclImport = true; return "bcl.Decimal";
-                    case ProtoTypeCode.Guid: requiresBclImport = true; return "bcl.Guid";
+                    case ProtoTypeCode.DateTime: requiresBclImport = true; return "DateTime";
+                    case ProtoTypeCode.TimeSpan: requiresBclImport = true; return "TimeSpan";
+                    case ProtoTypeCode.Decimal: requiresBclImport = true; return "Decimal";
+                    case ProtoTypeCode.Guid: requiresBclImport = true; return "Guid";
                     default: throw new NotSupportedException("No .proto map found for: " + effectiveType.FullName);
                 }
             }
